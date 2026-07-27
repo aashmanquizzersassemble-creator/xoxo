@@ -933,7 +933,23 @@ Gossip Girl`,
     try{
       const list = await Store.getSecrets();
       if(list && list.length){
-        secrets = list;
+        // Merge in any DEFAULT_SECRETS not already present (by id), so
+        // adding new default secrets later doesn't get lost behind an
+        // old already-saved list on someone's browser/device.
+        const existingIds = new Set(list.map(s=>s.id));
+        let merged = list.slice();
+        let changed = false;
+        DEFAULT_SECRETS.forEach((t,i)=>{
+          const id = 'seed'+i;
+          if(!existingIds.has(id)){
+            merged.push({id, text:t});
+            changed = true;
+          }
+        });
+        secrets = merged;
+        if(changed){
+          await Store.setSecrets(secrets);
+        }
       } else {
         secrets = DEFAULT_SECRETS.map((t,i)=>({id:'seed'+i, text:t}));
         await Store.setSecrets(secrets);
