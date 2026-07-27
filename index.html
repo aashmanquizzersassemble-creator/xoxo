@@ -964,15 +964,25 @@ Gossip Girl`,
   let activeSpotIndex = -1;
   let activeSecretText = '';
 
+  // PINNED MODE: the revealed message stays fixed on the id below instead of
+  // rotating daily. Set to null to go back to picking a new secret each day.
+  const PINNED_SECRET_ID = 'seed1'; // 'seed1' = the "A., rewriting himself for M." secret
+
   function setupHunt(){
     if(!secrets.length){
       activeSpotIndex = -1;
       return;
     }
     const day = todayStr();
-    const secretIndex = hashStr(day + '::secret') % secrets.length;
     activeSpotIndex = hashStr(day + '::spot') % SPOT_COUNT;
-    activeSecretText = secrets[secretIndex].text;
+
+    if(PINNED_SECRET_ID){
+      const pinned = secrets.find(s => s.id === PINNED_SECRET_ID);
+      activeSecretText = pinned ? pinned.text : secrets[0].text;
+    } else {
+      const secretIndex = hashStr(day + '::secret') % secrets.length;
+      activeSecretText = secrets[secretIndex].text;
+    }
 
     document.querySelectorAll('.spot-icon').forEach(el=>{
       const idx = parseInt(el.getAttribute('data-spot'),10);
