@@ -568,47 +568,95 @@
     font-family:'Bodoni Moda',serif;font-style:italic;font-size:15px;
     color:var(--gold-soft);letter-spacing:.05em;margin:0 0 28px;
   }
-  .ultra-player{
-    position:relative;width:100%;
-    padding-bottom:56.25%;height:0;
-    margin:0 0 36px;
+  .ultra-player-card{
+    display:flex;align-items:center;gap:16px;
+    text-align:left;
+    padding:18px 20px;
+    margin:0 0 40px;
     border:1px solid rgba(173,138,69,0.4);
-    background:#000;
+    background:rgba(255,255,255,0.03);
+    text-decoration:none;
+    transition:background .2s ease, border-color .2s ease;
   }
-  .ultra-player iframe{
-    position:absolute;inset:0;width:100%;height:100%;border:0;
+  .ultra-player-card:hover{background:rgba(173,138,69,0.08);border-color:var(--gold-soft);}
+  .ultra-player-play{
+    flex:0 0 auto;
+    width:46px;height:46px;
+    border-radius:50%;
+    border:1px solid rgba(173,138,69,0.6);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold-soft);
   }
-  .ultra-player-note{
-    font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.1em;
-    color:#8a7d68;margin:-26px 0 30px;text-transform:uppercase;
+  .ultra-player-play svg{width:16px;height:16px;}
+  .ultra-player-text .t1{
+    font-family:'Bodoni Moda',serif;font-style:italic;font-size:16px;
+    color:#fbf3e3;margin:0 0 3px;
   }
+  .ultra-player-text .t2{
+    font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:#a08a63;margin:0;
+  }
+
   .ultra-notes{
-    display:flex;flex-direction:column;gap:16px;margin:0 0 34px;
+    display:flex;flex-wrap:wrap;justify-content:center;gap:26px 22px;margin:0 0 34px;
   }
   .ultra-note{
-    background:rgba(255,255,255,0.03);
-    border:1px solid rgba(173,138,69,0.28);
-    padding:20px 22px;
-    text-align:left;
-    font-family:'Bodoni Moda',serif;
-    font-style:italic;
-    font-size:17px;
-    line-height:1.6;
-    color:#efe3cc;
+    width:230px;
+    background:#f4ede1;
+    padding:14px 14px 20px;
+    box-shadow:0 14px 30px rgba(0,0,0,0.45);
     opacity:0;
-    transform:translateY(10px);
-    transition:opacity .6s ease, transform .6s ease;
+    transform:translateY(28px) rotate(var(--tilt,0deg)) scale(.94);
+    transition:opacity .55s cubic-bezier(.2,.8,.3,1.15), transform .55s cubic-bezier(.2,.8,.3,1.15);
   }
-  .ultra-note.show{opacity:1;transform:translateY(0);}
+  .ultra-note.show{opacity:1;transform:translateY(0) rotate(var(--tilt,0deg)) scale(1);}
+  .ultra-note:nth-child(1){--tilt:-4deg;}
+  .ultra-note:nth-child(2){--tilt:3deg;}
+  .ultra-note:nth-child(3){--tilt:-2deg;}
+  .ultra-note:nth-child(4){--tilt:4deg;}
+  .ultra-note:nth-child(5){--tilt:-3deg;}
+  .ultra-note:nth-child(6){--tilt:2deg;}
+  .ultra-note:nth-child(7){--tilt:-1deg;}
+  .ultra-note .photo{
+    width:100%;height:150px;margin-bottom:14px;
+    background:
+      radial-gradient(120% 90% at 30% 10%, rgba(110,13,37,0.5), transparent 55%),
+      linear-gradient(150deg, #1a1210, #3a1421);
+    display:flex;align-items:center;justify-content:center;
+    color:rgba(201,174,124,0.55);
+  }
+  .ultra-note .photo svg{width:30px;height:30px;}
   .ultra-note .num{
     display:block;
     font-family:'Inter',sans-serif;
-    font-style:normal;
-    font-size:10px;
-    letter-spacing:.25em;
+    font-size:9px;
+    letter-spacing:.2em;
     text-transform:uppercase;
-    color:var(--gold-soft);
-    margin-bottom:8px;
+    color:#a8926c;
+    margin-bottom:6px;
+  }
+  .ultra-note .caption{
+    display:block;
+    font-family:'Courier New', 'Courier', monospace;
+    font-size:13.5px;
+    line-height:1.55;
+    color:#2b241e;
+    min-height:2.4em;
+  }
+  .ultra-note .caption::after{
+    content:"";
+    display:inline-block;
+    width:7px;height:1em;
+    background:#2b241e;
+    margin-left:2px;
+    vertical-align:text-bottom;
+    animation:caretBlink .9s steps(1) infinite;
+    opacity:0;
+  }
+  .ultra-note.typing .caption::after{opacity:1;}
+  @keyframes caretBlink{
+    0%,49%{opacity:1;}
+    50%,100%{opacity:0;}
   }
   .ultra-sig{
     font-family:'Bodoni Moda',serif;font-style:italic;font-size:15px;
@@ -743,19 +791,52 @@
     <h1 class="ultra-title">for you</h1>
     <p class="ultra-subtitle">ultraviolence, lana del rey</p>
 
-    <div class="ultra-player">
-      <iframe id="ultraFrame" src="" title="Ultraviolence" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
-    </div>
-    <p class="ultra-player-note">if it doesn't start on its own, hit play</p>
+    <a class="ultra-player-card" id="ultraPlayLink" href="https://www.youtube.com/results?search_query=Lana+Del+Rey+Ultraviolence+official+audio" target="_blank" rel="noopener">
+      <span class="ultra-player-play">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </span>
+      <span class="ultra-player-text">
+        <span class="t1">Ultraviolence — Lana Del Rey</span>
+        <span class="t2">play on YouTube</span>
+      </span>
+    </a>
 
     <div class="ultra-notes" id="ultraNotes">
-      <div class="ultra-note"><span class="num">01</span>BIRTHDAYY AA RHA HAIIII</div>
-      <div class="ultra-note"><span class="num">02</span>YOU'RE GOATED GNG</div>
-      <div class="ultra-note"><span class="num">03</span>YOU ARE NOT AT ALL ALONE NIGGA</div>
-      <div class="ultra-note"><span class="num">04</span>I'M WITH YOU FOREVER</div>
-      <div class="ultra-note"><span class="num">05</span>i won't ever leave you dw , we family hehe</div>
-      <div class="ultra-note"><span class="num">06</span>don't ever be sad , it hurts me seeing you sad</div>
-      <div class="ultra-note"><span class="num">07</span>i love you bbgurl</div>
+      <div class="ultra-note" data-text="BIRTHDAYY AA RHA HAIIII">
+        <span class="photo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9C.6 8.6 2 5 5.5 5 8 5 9.5 6.5 10 7.5 10.5 6.5 12 5 14.5 5 18 5 19.4 8.6 22 12c-2.5 4.4-10 9-10 9z"/></svg></span>
+        <span class="num">01</span>
+        <span class="caption"></span>
+      </div>
+      <div class="ultra-note" data-text="YOU'RE GOATED GNG">
+        <span class="photo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9C.6 8.6 2 5 5.5 5 8 5 9.5 6.5 10 7.5 10.5 6.5 12 5 14.5 5 18 5 19.4 8.6 22 12c-2.5 4.4-10 9-10 9z"/></svg></span>
+        <span class="num">02</span>
+        <span class="caption"></span>
+      </div>
+      <div class="ultra-note" data-text="YOU ARE NOT AT ALL ALONE NIGGA">
+        <span class="photo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9C.6 8.6 2 5 5.5 5 8 5 9.5 6.5 10 7.5 10.5 6.5 12 5 14.5 5 18 5 19.4 8.6 22 12c-2.5 4.4-10 9-10 9z"/></svg></span>
+        <span class="num">03</span>
+        <span class="caption"></span>
+      </div>
+      <div class="ultra-note" data-text="I'M WITH YOU FOREVER">
+        <span class="photo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9C.6 8.6 2 5 5.5 5 8 5 9.5 6.5 10 7.5 10.5 6.5 12 5 14.5 5 18 5 19.4 8.6 22 12c-2.5 4.4-10 9-10 9z"/></svg></span>
+        <span class="num">04</span>
+        <span class="caption"></span>
+      </div>
+      <div class="ultra-note" data-text="i won't ever leave you dw , we family hehe">
+        <span class="photo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9C.6 8.6 2 5 5.5 5 8 5 9.5 6.5 10 7.5 10.5 6.5 12 5 14.5 5 18 5 19.4 8.6 22 12c-2.5 4.4-10 9-10 9z"/></svg></span>
+        <span class="num">05</span>
+        <span class="caption"></span>
+      </div>
+      <div class="ultra-note" data-text="don't ever be sad , it hurts me seeing you sad">
+        <span class="photo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9C.6 8.6 2 5 5.5 5 8 5 9.5 6.5 10 7.5 10.5 6.5 12 5 14.5 5 18 5 19.4 8.6 22 12c-2.5 4.4-10 9-10 9z"/></svg></span>
+        <span class="num">06</span>
+        <span class="caption"></span>
+      </div>
+      <div class="ultra-note" data-text="i love you bbgurl">
+        <span class="photo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-10-9C.6 8.6 2 5 5.5 5 8 5 9.5 6.5 10 7.5 10.5 6.5 12 5 14.5 5 18 5 19.4 8.6 22 12c-2.5 4.4-10 9-10 9z"/></svg></span>
+        <span class="num">07</span>
+        <span class="caption"></span>
+      </div>
     </div>
 
     <p class="ultra-sig">— XOXO</p>
